@@ -16,7 +16,9 @@ function App() {
       <div className="app">
         <header className={"header-container"}>
           <div className={"header"}>
-            <img src={Logo} alt={"logo"} width={64} height={64} />
+            <a href={"/"}>
+              <img src={Logo} alt={"logo"} width={64} height={64} />
+            </a>
             {context.isConnected ? (
               <div className={"connected"}>
                 <div className={"dot"} />
