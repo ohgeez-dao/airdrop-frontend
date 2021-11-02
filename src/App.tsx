@@ -32,10 +32,18 @@ function App() {
         <div className={"body"}>
           <Switch>
             <Route path="/sharkpunks">
-              <NFTAirdrop data={sharkpunks} context={context} prev={{ name: "Plumbus", path: "/" }} />
+              <NFTAirdrop
+                data={sharkpunks}
+                context={context}
+                prev={{ name: "Plumbus", path: "/" }}
+              />
             </Route>
             <Route path="/">
-              <NFTAirdrop data={plumbus} context={context} next={{ name: "Sharkpunks", path: "/" }} />
+              <NFTAirdrop
+                data={plumbus}
+                context={context}
+                next={{ name: "Sharkpunks", path: "/sharkpunks" }}
+              />
             </Route>
           </Switch>
         </div>

@@ -49,7 +49,7 @@ const usePermissionChecker = (
         code: null,
         checking: false,
         authData:
-          context.address &&
+          utils.isAddress(context.address) &&
           recipients
             .filter((address) => !!address)
             .map(utils.getAddress)
