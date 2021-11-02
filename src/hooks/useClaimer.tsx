@@ -1,8 +1,8 @@
 import { TransactionResponse } from "@ethersproject/providers";
-import { BigNumberish, Contract, ethers } from "ethers";
+import { BigNumberish, ethers, utils } from "ethers";
 import { MerkleTree } from "merkletreejs";
 import keccak256 from "keccak256";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import NFT721Airdrop from "@shoyunft/airdrop/abis/BaseNFT721Airdrop.json";
 import NFT1155Airdrop from "@shoyunft/airdrop/abis/NFT1155AirdropV1.json";
@@ -13,6 +13,27 @@ export interface ClaimInfo {
   tokenId: BigNumberish | null;
 }
 
+const getContract = (ethereum, erc1155: boolean, address: string) => {
+  const signer = new ethers.providers.Web3Provider(ethereum).getSigner();
+  return ethers.ContractFactory.getContract(
+    address,
+    erc1155 ? NFT1155Airdrop : NFT721Airdrop,
+    signer
+  );
+};
+
+const getLeaf = (erc1155: boolean, address: string, authData: string) => {
+  if (!erc1155 && authData) {
+    const [id] = utils.defaultAbiCoder.decode(
+      ["bytes", "uint8", "bytes32", "bytes32"],
+      authData
+    );
+    return utils.keccak256(id);
+  } else {
+    return keccak256(address);
+  }
+};
+
 const useClaimer = (
   ethereum,
   erc1155: boolean,
@@ -21,7 +42,6 @@ const useClaimer = (
   address: string,
   authData: string
 ) => {
-  const [contract, setContract] = useState<Contract>();
   const [tokenId, setTokenId] = useState<number>();
   const [loadingClaimEvent, setLoadingClaimEvent] = useState(true);
   const [claimInfo, setClaimInfo] = useState<ClaimInfo>();
@@ -37,20 +57,11 @@ const useClaimer = (
     setClaimInfo();
     setClaiming(false);
     setError("");
-    if (ethereum) {
-      const signer = new ethers.providers.Web3Provider(ethereum).getSigner();
-      setContract(
-        ethers.ContractFactory.getContract(
-          contractAddress,
-          erc1155 ? NFT1155Airdrop : NFT721Airdrop,
-          signer
-        )
-      );
-    }
-  }, [ethereum, location.pathname]);
+  }, [ethereum, erc1155, location.pathname]);
 
   useEffect(() => {
-    if (contract && !erc1155) {
+    if (ethereum && !erc1155) {
+      const contract = getContract(ethereum, erc1155, contractAddress);
       const merkleRoot = tree.getHexRoot();
       contract.tokenIdRanges(merkleRoot).then(({ from }) => {
         contract.tokensClaimed(merkleRoot).then((claimed) => {
@@ -58,19 +69,22 @@ const useClaimer = (
         });
       });
     }
-  }, [contract]);
+  }, [ethereum, erc1155, contractAddress]);
 
   useEffect(() => {
-    if (address && contract) {
+    if (ethereum && address) {
+      const contract = getContract(ethereum, erc1155, contractAddress);
       setError(false);
       setLoadingClaimEvent(true);
       const merkleRoot = tree.getHexRoot();
+      const leaf = getLeaf(erc1155, address, authData);
       contract
         .queryFilter(
-          contract.filters.Claim(merkleRoot, erc1155 ? 0 : null, address)
+          erc1155
+            ? contract.filters.Claim(merkleRoot, null, address)
+            : contract.filters.Claim(merkleRoot, leaf, null, null)
         )
         .then((events) => {
-          console.log(events[0]);
           if (events && events.length > 0)
             contract.nftContract().then((address) => {
               setClaimInfo({
@@ -83,13 +97,14 @@ const useClaimer = (
         .catch((e) => setError(e.message))
         .finally(() => setLoadingClaimEvent(false));
     }
-  }, [address, contract]);
+  }, [ethereum, erc1155, address, contractAddress, authData]);
 
-  const onClaim = useCallback(async () => {
+  const onClaim = async () => {
     setError("");
     setClaiming(true);
     try {
-      const leaf = keccak256(address);
+      const contract = getContract(ethereum, erc1155, contractAddress);
+      const leaf = getLeaf(erc1155, address, authData);
       const proof = tree
         .getHexProof(leaf)
         .map((item) => ethers.utils.arrayify(item));
@@ -114,7 +129,7 @@ const useClaimer = (
     } finally {
       setClaiming(false);
     }
-  }, [address, tree, authData]);
+  };
 
   let claimError = error;
   if (error && error.includes('"message":"')) {
