@@ -19,10 +19,19 @@ const usePermissionChecker = (
       setChecking(true);
       fetch("https://api.sharkpunks.org/verify/" + code + ".json")
         .then((response) => {
-          response.json().then(console.log);
+          response
+            .json()
+            .then((data) => {
+              if (!data.error) {
+                setGranted(true);
+              }
+            })
+            .finally(() => {
+              setChecking(false);
+            });
         })
-        .catch(console.error)
-        .finally(() => {
+        .catch((e) => {
+          console.error(e);
           setChecking(false);
         });
     }
