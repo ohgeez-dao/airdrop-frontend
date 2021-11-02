@@ -1,7 +1,7 @@
 import React from "react";
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
 import { HiOutlineExternalLink } from "react-icons/hi";
-import { useLocation, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import "../styles/NFTAirdrop.css";
 import { DISCORD_AUTH_URL } from "../constants";
@@ -52,7 +52,11 @@ const NFTAirdrop = ({
   prev?: { name: string; path: string };
   next?: { name: string; path: string };
 }) => {
-  const location = useLocation();
+  const { code, checking, authData } = usePermissionChecker(
+    context,
+    data.auth_method,
+    data.recipients
+  );
   const {
     tokenId,
     claimInfo,
@@ -66,12 +70,7 @@ const NFTAirdrop = ({
     data.address,
     data.recipients,
     context.address,
-    location
-  );
-  const { code, checking, granted } = usePermissionChecker(
-    context,
-    data.auth_method,
-    data.recipients
+    authData
   );
   const onDiscord = () => {
     window.location.href = DISCORD_AUTH_URL;
@@ -162,7 +161,7 @@ const NFTAirdrop = ({
               >
                 Change Network to Ethereum Mainnet
               </button>
-            ) : !granted ? (
+            ) : !authData ? (
               <button className={"button inverted disabled"}>
                 You're not on the whitelist
               </button>

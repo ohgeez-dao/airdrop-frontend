@@ -3,6 +3,7 @@ import { BigNumberish, Contract, ethers } from "ethers";
 import { MerkleTree } from "merkletreejs";
 import keccak256 from "keccak256";
 import { useCallback, useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import NFT721Airdrop from "@shoyunft/airdrop/abis/BaseNFT721Airdrop.json";
 import NFT1155Airdrop from "@shoyunft/airdrop/abis/NFT1155AirdropV1.json";
 
@@ -18,7 +19,7 @@ const useClaimer = (
   contractAddress: string,
   recipients: string[],
   address: string,
-  location
+  authData: string
 ) => {
   const [contract, setContract] = useState<Contract>();
   const [tokenId, setTokenId] = useState<number>();
@@ -26,6 +27,7 @@ const useClaimer = (
   const [claimInfo, setClaimInfo] = useState<ClaimInfo>();
   const [claiming, setClaiming] = useState(false);
   const [error, setError] = useState("");
+  const location = useLocation();
 
   const leaves = recipients.map((v) => keccak256(v));
   const tree = new MerkleTree(leaves, keccak256, { sort: true });
@@ -93,7 +95,7 @@ const useClaimer = (
         .map((item) => ethers.utils.arrayify(item));
       const params = erc1155
         ? [tree.getHexRoot(), 0, proof]
-        : [tree.getHexRoot(), proof];
+        : [tree.getHexRoot(), proof, authData];
       const tx: TransactionResponse = await contract.claim(...params);
       const receipt = await tx.wait();
       const info = {
@@ -112,7 +114,7 @@ const useClaimer = (
     } finally {
       setClaiming(false);
     }
-  }, [address, tree]);
+  }, [address, tree, authData]);
 
   let claimError = error;
   if (error && error.includes('"message":"')) {

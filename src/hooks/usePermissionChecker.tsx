@@ -1,6 +1,7 @@
 import { utils } from "ethers";
 import { parse } from "querystring";
 import { useEffect, useState } from "react";
+import { API_URL } from "../constants";
 import { EthereumContext } from "./useEthereum";
 
 const usePermissionChecker = (
@@ -9,23 +10,29 @@ const usePermissionChecker = (
   recipients: string[]
 ) => {
   const [checking, setChecking] = useState(false);
-  const [granted, setGranted] = useState(false);
+  const [authData, setAuthData] = useState("");
 
   const code = parse(window.location.href.split("?")[1]).code as string;
-  console.log(code);
 
   useEffect(() => {
     if (authMethod == "discord" && code) {
       setChecking(true);
-      fetch("https://api.sharkpunks.org/verify/" + code + ".json")
+      fetch(API_URL + code + ".json")
         .then((response) => {
           response
             .json()
             .then((data) => {
               if (!data.error) {
-                setGranted(true);
+                const { v, r, s } = data.signature;
+                setAuthData(
+                  utils.defaultAbiCoder.encode(
+                    ["bytes", "uint8", "bytes32", "bytes32"],
+                    [utils.toUtf8Bytes(data.id), v, r, s]
+                  )
+                );
               }
             })
+            .catch(console.error)
             .finally(() => {
               setChecking(false);
             });
@@ -41,14 +48,16 @@ const usePermissionChecker = (
     ? {
         code: null,
         checking: false,
-        granted:
+        authData:
           context.address &&
           recipients
             .filter((address) => !!address)
             .map(utils.getAddress)
-            .includes(utils.getAddress(context.address)),
+            .includes(utils.getAddress(context.address))
+            ? context.address
+            : "",
       }
-    : { code, checking, granted };
+    : { code, checking, authData };
 };
 
 export default usePermissionChecker;

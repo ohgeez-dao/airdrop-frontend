@@ -9,3 +9,5 @@ export const DISCORD_REDIRECT_URL =
     process.env.NODE_ENV == "development"
         ? "http://localhost:3000/sharkpunks"
         : "https://airdrops.levxdao.org/sharkpunks";
+export const API_URL =
+    process.env.NODE_ENV == "development" ? "http://localhost:3001/verify/" : "https://api.sharkpunks.org/verify/";
