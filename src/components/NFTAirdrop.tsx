@@ -186,11 +186,6 @@ const NFTAirdrop = ({
             </button>
           )}
         </div>
-        {claimInfo && (
-          <div className={"warning"}>
-            ⚠️ Claimed NFT will be locked until the launch of Shoyu
-          </div>
-        )}
         {claimError && <div className={"error"}>{claimError}</div>}
         <div className={"pagination"}>
           {prev ? (
