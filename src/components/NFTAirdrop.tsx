@@ -2,6 +2,7 @@ import React from "react";
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
 import { HiOutlineExternalLink } from "react-icons/hi";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import "../styles/NFTAirdrop.css";
 import { DISCORD_AUTH_URL } from "../constants";
@@ -151,6 +152,11 @@ const NFTAirdrop = ({
             ) : (
               <button className={"button discord"} onClick={onDiscord}>
                 Sign in with Discord
+                {" "}
+                <FontAwesomeIcon
+                  icon={["fab", "discord"]}
+                  style={{ verticalAlign: "top" }}
+                />
               </button>
             )
           ) : context.isConnected ? (
@@ -182,6 +188,11 @@ const NFTAirdrop = ({
             )
           ) : (
             <button className={"button inverted"} onClick={context.onConnect}>
+              <FontAwesomeIcon
+                icon="wallet"
+                style={{ verticalAlign: "top" }}
+              />
+              {" "}
               Connect Wallet
             </button>
           )}

@@ -9,6 +9,13 @@ import LogoSquared from "./images/logo-squared.gif";
 import plumbus from "./data/plumbus.json";
 import sharkpunks from "./data/sharkpunks.json";
 
+// FontAwesome library
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fab } from "@fortawesome/free-brands-svg-icons";
+import { faWallet } from "@fortawesome/free-solid-svg-icons";
+library.add(fab, faWallet);
+
 function App() {
   const context = useEthereum();
   return (
@@ -51,14 +58,20 @@ function App() {
         </div>
         <div className={"border"} />
         <footer>
-          <img src={LogoSquared} alt={"logo"} width={96} height={96} />
+          <img src={LogoSquared} alt={"logo"} width={96} height={96} style={{
+            borderRadius: '50%'
+          }} />
           <div className={"social"}>
             <a href={"https://twitter.com/LevXDAOhGeez"} target={"_blank"}>
-              Twitter
+              <FontAwesomeIcon icon={["fab", "twitter"]} />
             </a>
             <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
             <a href={"https://discord.gg/oh-geez"} target={"_blank"}>
-              Discord
+              <FontAwesomeIcon icon={["fab", "discord"]} />
+            </a>
+            <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+            <a href={"https://blog.levx.io"} target={"_blank"}>
+              <FontAwesomeIcon icon={["fab", "medium"]} />
             </a>
           </div>
           <div className={"copyright"}>
