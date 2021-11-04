@@ -43,7 +43,10 @@ const useEthereum = (): EthereumContext => {
           alert(e.message);
         });
       ethereum.on("accountsChanged", () => window.location.reload());
-      ethereum.on("chainChanged", () => window.location.reload());
+      ethereum.on("chainChanged", (id: string) => {
+        if (id === "0x1") setChainId(Number.parseInt(id, 16));
+        else window.location.reload();
+      });
     }
   };
 

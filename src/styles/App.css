@@ -15,6 +15,10 @@
 }
 
 .connected {
+  border: 1.5px solid #d0cec8;
+  border-radius: 5px;
+  font-size: 16px;
+  padding: 0 5px;
   display: flex;
   flex-direction: row;
 }
@@ -28,7 +32,9 @@
 }
 
 .login {
-  border: none;
+  border: 1.5px solid #d0cec8;
+  border-radius: 5px;
+  padding: 5px;
   background: none;
   font-size: 16px;
 }
