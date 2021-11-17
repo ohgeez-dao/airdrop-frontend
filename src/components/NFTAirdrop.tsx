@@ -143,16 +143,14 @@ const NFTAirdrop = ({
         </a>
         <div className={"description"}>{data.description}</div>
         <div className={"button-container"}>
-          {data.auth_method == "discord" && !code ? (
-            checking ? (
-              <button className={"button discord disabled"}>
-                Signing in...
-              </button>
-            ) : (
-              <button className={"button discord"} onClick={onDiscord}>
-                Sign in with Discord
-              </button>
-            )
+          {checking ? (
+            <button className={"button inverted disabled"}>
+              Signing in...
+            </button>
+          ) : data.auth_method == "discord" && !code ? (
+            <button className={"button discord"} onClick={onDiscord}>
+              Sign in with Discord
+            </button>
           ) : context.isConnected ? (
             context.chainId != 1 ? (
               <button

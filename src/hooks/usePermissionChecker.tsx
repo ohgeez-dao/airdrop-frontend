@@ -1,4 +1,4 @@
-import { utils } from "ethers";
+import { ethers, utils } from "ethers";
 import { parse } from "querystring";
 import { useEffect, useState } from "react";
 import { API_URL } from "../constants";
@@ -17,32 +17,61 @@ const usePermissionChecker = (
   useEffect(() => {
     if (authMethod == "discord" && code) {
       setChecking(true);
-      fetch(API_URL + code + ".json")
-        .then((response) => {
-          response
-            .json()
-            .then((data) => {
-              if (!data.error) {
-                const { v, r, s } = data.signature;
-                setAuthData(
-                  utils.defaultAbiCoder.encode(
-                    ["bytes", "uint8", "bytes32", "bytes32"],
-                    [utils.toUtf8Bytes(data.id), v, r, s]
-                  )
-                );
-              }
-            })
-            .catch(console.error)
-            .finally(() => {
-              setChecking(false);
-            });
-        })
-        .catch((e) => {
+      (async () => {
+        try {
+          const response = await fetch(API_URL + code + ".json");
+          const data = await response.json();
+          if (!data.error) {
+            const { v, r, s } = data.signature;
+            setAuthData(
+              utils.defaultAbiCoder.encode(
+                ["bytes", "uint8", "bytes32", "bytes32"],
+                [utils.toUtf8Bytes(data.id), v, r, s]
+              )
+            );
+          }
+        } catch (e) {
           console.error(e);
+        } finally {
           setChecking(false);
-        });
+        }
+      })();
     }
   }, [code]);
+
+  useEffect(() => {
+    if (authMethod == "ethereum-signature" && context.address) {
+      setChecking(true);
+      const func = async () => {
+        try {
+          const address = utils.getAddress(context.address);
+          const signer = new ethers.providers.Web3Provider(
+            context.ethereum
+          ).getSigner();
+          const signature = await signer.signMessage(address);
+          const response = await fetch(
+            API_URL + address + "/" + signature + ".json"
+          );
+          const data = await response.json();
+          if (!data.error) {
+            const { v, r, s } = data.signature;
+            setAuthData(
+              utils.defaultAbiCoder.encode(
+                ["bytes", "uint8", "bytes32", "bytes32"],
+                [utils.toUtf8Bytes(data.id), v, r, s]
+              )
+            );
+          }
+        } catch (e) {
+          console.error(e);
+        } finally {
+          setChecking(false);
+        }
+      };
+      const id = setTimeout(func, 200);
+      return () => clearTimeout(id);
+    }
+  }, [context]);
 
   return authMethod == "ethereum"
     ? {

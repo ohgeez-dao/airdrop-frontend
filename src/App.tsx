@@ -1,5 +1,10 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 
 import "./styles/App.css";
 import NFTAirdrop from "./components/NFTAirdrop";
@@ -8,6 +13,7 @@ import Logo from "./images/logo.png";
 import LogoSquared from "./images/logo-squared.gif";
 import plumbus from "./data/plumbus.json";
 import sharkpunks from "./data/sharkpunks.json";
+import sharkpunks750 from "./data/sharkpunks750.json";
 
 function App() {
   const context = useEthereum();
@@ -33,20 +39,29 @@ function App() {
         </header>
         <div className={"body"}>
           <Switch>
+            <Route path="/plumbus">
+              <NFTAirdrop
+                data={plumbus}
+                context={context}
+                prev={{ name: "333 Sharkpunks for OGs", path: "/sharkpunks" }}
+              />
+            </Route>
             <Route path="/sharkpunks">
               <NFTAirdrop
                 data={sharkpunks}
                 context={context}
-                prev={{ name: "Plumbus", path: "/" }}
+                next={{ name: "Plumbus", path: "/plumbus" }}
+                prev={{ name: "750 Sharkpunks Raffled", path: "/" }}
               />
             </Route>
-            <Route path="/">
+            <Route exact path="/">
               <NFTAirdrop
-                data={plumbus}
+                data={sharkpunks750}
                 context={context}
-                next={{ name: "Sharkpunks", path: "/sharkpunks" }}
+                next={{ name: "333 Sharkpunks for OGs", path: "/sharkpunks" }}
               />
             </Route>
+            <Redirect to="/" />
           </Switch>
         </div>
         <div className={"border"} />

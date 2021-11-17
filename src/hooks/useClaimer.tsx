@@ -63,6 +63,7 @@ const useClaimer = (
     if (ethereum && !erc1155) {
       const contract = getContract(ethereum, erc1155, contractAddress);
       const merkleRoot = tree.getHexRoot();
+      console.log(merkleRoot);
       contract.tokenIdRanges(merkleRoot).then(({ from }) => {
         contract.tokensClaimed(merkleRoot).then((claimed) => {
           setTokenId(from.toNumber() + claimed.toNumber());
