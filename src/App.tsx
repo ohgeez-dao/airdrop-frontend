@@ -14,6 +14,7 @@ import LogoSquared from "./images/logo-squared.gif";
 import plumbus from "./data/plumbus.json";
 import sharkpunks from "./data/sharkpunks.json";
 import sharkpunks750 from "./data/sharkpunks750.json";
+import maidAvatars from "./data/maid-avatars.json";
 
 function App() {
   const context = useEthereum();
@@ -51,14 +52,28 @@ function App() {
                 data={sharkpunks}
                 context={context}
                 next={{ name: "Plumbus", path: "/plumbus" }}
-                prev={{ name: "750 Sharkpunks Raffled", path: "/" }}
+                prev={{
+                  name: "750 Sharkpunks Raffled",
+                  path: "/sharkpunks750",
+                }}
               />
             </Route>
-            <Route exact path="/">
+            <Route exact path="/sharkpunks750">
               <NFTAirdrop
                 data={sharkpunks750}
                 context={context}
                 next={{ name: "333 Sharkpunks for OGs", path: "/sharkpunks" }}
+                prev={{ name: "Maid Avatars", path: "/" }}
+              />
+            </Route>
+            <Route exact path="/">
+              <NFTAirdrop
+                data={maidAvatars}
+                context={context}
+                next={{
+                  name: "750 Sharkpunks Raffled",
+                  path: "/sharkpunks750",
+                }}
               />
             </Route>
             <Redirect to="/" />

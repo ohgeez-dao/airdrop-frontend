@@ -1,0 +1,18 @@
+{
+  "standard": "ERC721",
+  "auth_method": "none",
+  "type": "2d",
+  "announcement": "https://app.maidverse.org",
+  "media_url": "https://storage.googleapis.com/maidverse/basic-avatar.png",
+  "default_media_url": "https://storage.googleapis.com/maidverse/basic-avatar.png",
+  "width": 300,
+  "height": 300,
+  "mime_type": "image/png",
+  "title": "Maidverse",
+  "name": "Maid Avatars",
+  "artist_name": "Chowbie",
+  "artist_url": "https://twitter.com/Chowbie_",
+  "description": "Mint your default avatar for free! You can access https://app.maidverse.org with your avatar.",
+  "address": "0x4ed132ffCA5B16D04FEA2DB3D1416dAC8371279b",
+  "recipients": []
+}

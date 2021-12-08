@@ -60,7 +60,7 @@ const useClaimer = (
   }, [ethereum, erc1155, location.pathname]);
 
   useEffect(() => {
-    if (ethereum && !erc1155) {
+    if (ethereum && !erc1155 && recipients.length > 0) {
       const contract = getContract(ethereum, erc1155, contractAddress);
       const merkleRoot = tree.getHexRoot();
       console.log(merkleRoot);
@@ -70,7 +70,7 @@ const useClaimer = (
         });
       });
     }
-  }, [ethereum, erc1155, contractAddress]);
+  }, [ethereum, erc1155, recipients, contractAddress]);
 
   useEffect(() => {
     if (ethereum && address) {

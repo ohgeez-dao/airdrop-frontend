@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 import "../styles/NFTAirdrop.css";
 import { DISCORD_AUTH_URL } from "../constants";
+import useMinter from "../hooks/useMinter";
 import usePermissionChecker from "../hooks/usePermissionChecker";
 import useClaimer, { ClaimInfo } from "../hooks/useClaimer";
 import { EthereumContext } from "../hooks/useEthereum";
@@ -58,6 +59,12 @@ const NFTAirdrop = ({
     data.recipients
   );
   const {
+    onMint,
+    minting,
+    mintError,
+    tokenId: mintedTokenId,
+  } = useMinter(context.ethereum, data.address, context.address);
+  const {
     tokenId,
     claimInfo,
     loadingClaimEvent,
@@ -74,6 +81,11 @@ const NFTAirdrop = ({
   );
   const onDiscord = () => {
     window.location.href = DISCORD_AUTH_URL;
+  };
+  const onViewMinted = (contract: string, tokenId: number) => () => {
+    const url =
+      "https://opensea.io/assets/" + contract + "/" + tokenId.toString();
+    window.open(url);
   };
   const onView = (info: ClaimInfo) => () => {
     let url;
@@ -159,6 +171,23 @@ const NFTAirdrop = ({
               >
                 Change Network to Ethereum Mainnet
               </button>
+            ) : data.auth_method == "none" ? (
+              mintedTokenId ? (
+                <button
+                  className={"button"}
+                  onClick={onViewMinted(data.address, mintedTokenId)}
+                >
+                  View your NFT <HiOutlineExternalLink size={20} />
+                </button>
+              ) : minting ? (
+                <button className={"button inverted disabled"}>
+                  Minting...
+                </button>
+              ) : (
+                <button className={"button"} onClick={onMint}>
+                  Mint
+                </button>
+              )
             ) : !authData ? (
               <button className={"button inverted disabled"}>
                 You're not on the whitelist
@@ -184,6 +213,7 @@ const NFTAirdrop = ({
             </button>
           )}
         </div>
+        {mintError && <div className={"error"}>{mintError}</div>}
         {claimError && <div className={"error"}>{claimError}</div>}
         <div className={"pagination"}>
           {prev ? (
