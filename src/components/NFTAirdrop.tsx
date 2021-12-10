@@ -77,6 +77,7 @@ const NFTAirdrop = ({
     data.address,
     data.recipients,
     context.address,
+    data.auth_method,
     authData
   );
   const onDiscord = () => {

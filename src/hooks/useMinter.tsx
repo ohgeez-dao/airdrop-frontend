@@ -29,7 +29,6 @@ const useMinter = (ethereum, contractAddress: string, address: string) => {
       const receipt = await tx.wait();
       if (receipt.logs.length >= 1) {
         const event = contract.interface.parseLog(receipt.logs[0]);
-        console.log(event.args);
         setTokenId(Number(event.args.tokenId));
       }
     } catch (e) {

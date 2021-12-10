@@ -2093,10 +2093,10 @@
     estree-walker "^1.0.1"
     picomatch "^2.2.2"
 
-"@shoyunft/airdrop@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@shoyunft/airdrop/-/airdrop-1.1.1.tgz#59b4dbfc0eced6c0d628a912574d419e887d3031"
-  integrity sha512-8MN5gTsxheivERedrjSRKTQKYk4V2PFn+UTrScHG/qAVVihJPSoxj9TExELQPlbuBTXReh7K0s+EqDzbukDIkg==
+"@shoyunft/airdrop@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@shoyunft/airdrop/-/airdrop-1.2.0.tgz#1f80fbc8a9e0fe87e03b0e73c1fc0a72aa50ad8b"
+  integrity sha512-u45BvS8HNRyxsKN79GJeANFYy4Gr/bjNl9A09Ler0eXVUkRxJ51nwg5AoiUU6PRkC0B230nO4H/N8AaIa9jgng==
   dependencies:
     "@openzeppelin/contracts" "^4.3.2"
     "@shoyunft/contracts" "^1.0.5"

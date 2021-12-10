@@ -14,7 +14,22 @@ import LogoSquared from "./images/logo-squared.gif";
 import plumbus from "./data/plumbus.json";
 import sharkpunks from "./data/sharkpunks.json";
 import sharkpunks750 from "./data/sharkpunks750.json";
+import kawaiiForOhGeezAndOmu from "./data/kawaii-for-oh-geez-omu.json";
 import maidAvatars from "./data/maid-avatars.json";
+
+const pages = {
+  plumbus: { name: "Plumbus", path: "/plumbus" },
+  sharkpunks: { name: "333 Sharkpunks for OGs", path: "/sharkpunks" },
+  sharkpunks750: {
+    name: "750 Sharkpunks Raffled",
+    path: "/sharkpunks750",
+  },
+  kawaiiForOhGeezAndOmu: {
+    name: "Kawaii Maid Girls for $OH-GEEZ & $OMU",
+    path: "/kawaii-for-oh-geez-and-omu",
+  },
+  maidAvatars: { name: "Maid Avatars", path: "/maid-avatars" },
+};
 
 function App() {
   const context = useEthereum();
@@ -40,43 +55,45 @@ function App() {
         </header>
         <div className={"body"}>
           <Switch>
-            <Route path="/plumbus">
+            <Route path={pages.plumbus.path}>
               <NFTAirdrop
                 data={plumbus}
                 context={context}
-                prev={{ name: "333 Sharkpunks for OGs", path: "/sharkpunks" }}
+                prev={pages.sharkpunks}
               />
             </Route>
-            <Route path="/sharkpunks">
+            <Route path={pages.sharkpunks.path}>
               <NFTAirdrop
                 data={sharkpunks}
                 context={context}
-                next={{ name: "Plumbus", path: "/plumbus" }}
-                prev={{
-                  name: "750 Sharkpunks Raffled",
-                  path: "/sharkpunks750",
-                }}
+                next={pages.plumbus}
+                prev={pages.sharkpunks750}
               />
             </Route>
-            <Route exact path="/sharkpunks750">
+            <Route exact path={pages.sharkpunks750.path}>
               <NFTAirdrop
                 data={sharkpunks750}
                 context={context}
-                next={{ name: "333 Sharkpunks for OGs", path: "/sharkpunks" }}
-                prev={{ name: "Maid Avatars", path: "/" }}
+                next={pages.sharkpunks}
+                prev={pages.kawaiiForOhGeezAndOmu}
               />
             </Route>
-            <Route exact path="/">
+            <Route exact path={pages.kawaiiForOhGeezAndOmu.path}>
+              <NFTAirdrop
+                data={kawaiiForOhGeezAndOmu}
+                context={context}
+                next={pages.sharkpunks750}
+                prev={pages.maidAvatars}
+              />
+            </Route>
+            <Route exact path={pages.maidAvatars.path}>
               <NFTAirdrop
                 data={maidAvatars}
                 context={context}
-                next={{
-                  name: "750 Sharkpunks Raffled",
-                  path: "/sharkpunks750",
-                }}
+                next={pages.kawaiiForOhGeezAndOmu}
               />
             </Route>
-            <Redirect to="/" />
+            <Redirect to={pages.maidAvatars.path} />
           </Switch>
         </div>
         <div className={"border"} />

@@ -18,7 +18,7 @@
     "@google/model-viewer": "^1.9.0",
     "@heroicons/react": "^1.0.4",
     "@metamask/detect-provider": "^1.2.0",
-    "@shoyunft/airdrop": "^1.1.1",
+    "@shoyunft/airdrop": "^1.2.0",
     "cra-template-typescript": "1.1.2",
     "ethers": "^5.4.7",
     "keccak256": "^1.0.3",
