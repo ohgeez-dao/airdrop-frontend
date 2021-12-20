@@ -13,6 +13,7 @@ import Logo from "./images/logo.png";
 import LogoSquared from "./images/logo-squared.gif";
 import plumbus from "./data/plumbus.json";
 import sharkpunks from "./data/sharkpunks.json";
+import sharkpunks5 from "./data/sharkpunks5.json";
 import sharkpunks750 from "./data/sharkpunks750.json";
 import kawaiiForOhGeezAndOmu from "./data/kawaii-for-oh-geez-omu.json";
 import maidAvatars from "./data/maid-avatars.json";
@@ -92,6 +93,9 @@ function App() {
                 context={context}
                 next={pages.kawaiiForOhGeezAndOmu}
               />
+            </Route>
+            <Route exact path={"/sharkpunks5"}>
+              <NFTAirdrop data={sharkpunks5} context={context} />
             </Route>
             <Redirect to={pages.maidAvatars.path} />
           </Switch>

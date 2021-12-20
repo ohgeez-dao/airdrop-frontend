@@ -1,0 +1,26 @@
+{
+  "standard": "ERC721",
+  "auth_method": "ethereum-signature",
+  "type": "2d",
+  "announcement": "https://twitter.com/SharkpunksNFT/status/1447562806266523650",
+  "media_url": "https://api.sharkpunks.org/images/$tokenId.png",
+  "default_media_url": "https://api.sharkpunks.org/images/542.png",
+  "width": 300,
+  "height": 300,
+  "mime_type": "image/png",
+  "title": "5 Sharkpunks Winners",
+  "name": "Sharkpunks #$tokenId",
+  "artist_name": "amantino",
+  "artist_url": "https://amantinopixel.wordpress.com/",
+  "description": "⚠️Sharkies get old very fast and as they get old, the image gets transparent. 👻To keep them alive, you need to tweet about it every week including this message '#sharkpunks #sharky_0 @SharkpunksNFT https://api.sharkpunks.org/social/0'",
+  "address": "0x8933375948faBdB7A182A6190213E3B93dfC11A8",
+  "recipients":
+  [
+    "0x5b8C253517b6Bd003369173109693B01cb6841B5",
+    "0x3c16A2994e0EcaC1AEAAa25c8384479117757A26",
+    "0x943Db96bB56eC78d9a3C4bB3aB74423bf19854f4",
+    "0x3cB140cc7c6aCCBC18291014723Ac11c7f6DCf4B",
+    "0x24648de9EaC2644fC082d1173324b906DA103F4E",
+    "0x017f17Db827F53e31Ba07611f4Fd6B006a7D8009"
+  ]
+}
